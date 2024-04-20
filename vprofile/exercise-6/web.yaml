@@ -1,0 +1,23 @@
+---
+
+- name: Webserver setup
+  hosts: webservers
+  become: yes
+  tasks:
+    - name: Installed httpd
+      ansible.builtin.yum:
+        name: httpd
+        state: present
+
+    - name: Start service
+      ansible.builtin.service:
+        name: httpd
+        state: started
+        enabled: yes
+    - name: Copy file with owner and permissions
+      copy:
+        src: /home/ec2-user/vprofile/exercise-6/index.html
+        dest: ~/index.html
+        owner: ec2-user
+        group: ec2-user
+        mode: '0644'
